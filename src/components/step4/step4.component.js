@@ -13,7 +13,7 @@ class Step4 extends Component {
                             return (
                                 <div key={index} className="col-sm-4">
                                     <button onClick={() => this.props.handler(index)}
-                                            className="container border border-3 border-gray selectable rounded">
+                                            className={'container border border-3 ' + (this.props.currentKebab.sauces.includes(index) ? 'border-warning' : 'border-gray') + ' selectable rounded'}>
                                         <img alt={sauce.name} src={sauce.picture}/>
                                         <p>{sauce.name}</p>
                                     </button>

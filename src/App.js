@@ -128,33 +128,43 @@ class App extends Component {
     }
 
     selectVegetables(vegetable) {
-        this.setState(prevState => ({
-            currentKebab: {
-                ...prevState.currentKebab,
-                vegetables: [...this.state.currentKebab.vegetables, vegetable]
-            },
-        }), () => {
-            if (this.state.currentKebab.vegetables.length >= 2) {
-                this.setState({
-                    currentStep: 4
-                })
+        if(this.state.currentKebab.vegetables.includes(vegetable)) {
+            this.setState(prevState => ({
+                currentKebab: {
+                    ...prevState.currentKebab,
+                    vegetables: this.state.currentKebab.vegetables.filter(item => item !== vegetable)
+                },
+            }));
+        } else {
+            if(this.state.currentKebab.vegetables.length <= 2) {
+                this.setState(prevState => ({
+                    currentKebab: {
+                        ...prevState.currentKebab,
+                        vegetables: [...this.state.currentKebab.vegetables, vegetable]
+                    },
+                }));
             }
-        });
+        }
     }
 
     selectSauces(sauce) {
-        this.setState(prevState => ({
-            currentKebab: {
-                ...prevState.currentKebab,
-                sauces: [...this.state.currentKebab.sauces, sauce]
-            },
-        }), () => {
-            if (this.state.currentKebab.sauces.length >= 2) {
-                this.setState({
-                    currentStep: 5
-                })
+        if(this.state.currentKebab.sauces.includes(sauce)) {
+            this.setState(prevState => ({
+                currentKebab: {
+                    ...prevState.currentKebab,
+                    sauces: this.state.currentKebab.sauces.filter(item => item !== sauce)
+                },
+            }));
+        } else {
+            if(this.state.currentKebab.sauces.length < 2) {
+                this.setState(prevState => ({
+                    currentKebab: {
+                        ...prevState.currentKebab,
+                        sauces: [...this.state.currentKebab.sauces, sauce]
+                    },
+                }));
             }
-        });
+        }
     }
 
     addToCard() {

@@ -13,7 +13,7 @@ class Step3 extends Component {
                             return (
                                 <div key={index} className="col-sm-4">
                                     <button onClick={() => this.props.handler(index)}
-                                            className="container border border-3 border-gray selectable rounded">
+                                            className={'container border border-3 ' + (this.props.currentKebab.vegetables.includes(index) ? 'border-warning' : 'border-gray') + ' selectable rounded'}>
                                         <img alt={vegetable.name} src={vegetable.picture}/>
                                         <p>{vegetable.name}</p>
                                     </button>
@@ -39,7 +39,6 @@ class Step3 extends Component {
             </Fragment>
         );
     }
-
 }
 
 export default Step3;
