@@ -1,7 +1,7 @@
 import {Component, Fragment} from "react";
-import './checkout.css';
+import './preparing.css';
 
-class Checkout extends Component {
+class Preparing extends Component {
 
     formattedPrice(price) {
         return `${parseInt(price / 100)}€${price % 100 || ""}`
@@ -21,7 +21,7 @@ class Checkout extends Component {
                 <div className="col-sm mt-2">
                     <div className="row justify-content-center align-self-center">
                         <h4 className="text-center mb-4">Total: { this.finalPrice() }</h4>
-                        <button className="btn btn-warning" onClick={() => this.props.launch()}>Passer la commande</button>
+                        <button className="btn btn-warning">Passer la commande</button>
                         <h3>Votre commande</h3>
                         {
                             this.props.basket.map((item, index) => {
@@ -74,4 +74,4 @@ class Checkout extends Component {
 
 }
 
-export default Checkout;
+export default Preparing;

@@ -122,6 +122,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            preparing: false,
             currentStep: 1,
             currentKebab: {
                 bread: null,
@@ -140,6 +141,7 @@ class App extends Component {
         this.selectVegetables = this.selectVegetables.bind(this);
         this.selectSauces = this.selectSauces.bind(this);
         this.addToCard = this.addToCard.bind(this);
+        this.launch = this.launch.bind(this);
         this.orderSpecific = this.orderSpecific.bind(this);
         this.decrement = this.decrement.bind(this);
         this.increment = this.increment.bind(this);
@@ -301,33 +303,69 @@ class App extends Component {
         }
     }
 
+    launch() {
+        if (this.state.basket.length > 0) {
+            this.setState({
+                preparing: true,
+                basket: [],
+                currentKebab: {
+                    bread: null,
+                    meat: null,
+                    vegetables: [],
+                    sauces: [],
+                    quantity: 1,
+                    id: Date.now()
+                },
+                currentStep: 1
+            });
+        }
+    }
+
     render() {
-        return (
-            <div className="container-fluid">
-                <div className="row">
-
-                    <div className="col-md-2">
-                        <Menu ingredients={ingredients} menu={menu} handler={this.orderSpecific}/>
-                    </div>
-                    <div className="col-md-8">
-
-                        <div className="container">
-                            <img alt="logo" src="assets/img.png" className="img-thumbnai"/>
-                            <div className="row mt-2">
-                                {
-                                    this.renderSwitch()
-                                }
+        if (this.state.preparing) {
+            return (
+                <div className="container-fluid">
+                    <div className="row">
+                        <div className="row justify-content-center align-self-center">
+                            <div className="col-md-2">
+                                <img alt="logo" src="assets/img.png" className="img-thumbnai"/>
+                                <h1>C'est parti</h1>
+                                <b>Notre maitre kébabier prépare votre commande.</b>
+                                <img alt="preparing" src="assets/preparing.png" className="img"/>
                             </div>
                         </div>
                     </div>
-                    <div className="col-md-2">
-                        <Checkout ingredients={ingredients} basket={this.state.basket} decrement={this.decrement}
-                                  increment={this.increment} kebabPrice={kebabPrice}/>
+                </div>
+            )
+        } else {
+            return (
+                <div className="container-fluid">
+                    <div className="row">
+
+                        <div className="col-md-2">
+                            <Menu ingredients={ingredients} menu={menu} handler={this.orderSpecific}/>
+                        </div>
+                        <div className="col-md-8">
+
+                            <div className="container">
+                                <img alt="logo" src="assets/img.png" className="img-thumbnai"/>
+                                <div className="row mt-2">
+                                    {
+                                        this.renderSwitch()
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-2">
+                            <Checkout ingredients={ingredients} basket={this.state.basket} decrement={this.decrement}
+                                      increment={this.increment} kebabPrice={kebabPrice} launch={this.launch}/>
+                        </div>
                     </div>
                 </div>
-            </div>
-        );
+            );
+        }
     }
+
 }
 
 export default App;
