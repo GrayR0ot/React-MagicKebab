@@ -15,6 +15,10 @@ const ingredients = {
         {
             name: 'Galette',
             picture: 'assets/bread/bread2.png'
+        },
+        {
+            name: 'Baguette',
+            picture: 'assets/bread/bread3.png'
         }
     ],
     meets: [
@@ -82,11 +86,25 @@ class App extends Component {
             },
             basket: []
         }
+        this.previous = this.previous.bind(this);
+        this.next = this.next.bind(this);
         this.selectBread = this.selectBread.bind(this);
         this.selectMeet = this.selectMeet.bind(this);
         this.selectVegetables = this.selectVegetables.bind(this);
         this.selectSauces = this.selectSauces.bind(this);
         this.addToCard = this.addToCard.bind(this);
+    }
+
+    previous() {
+        if (this.state.currentStep > 1) {
+            this.setState({currentStep: this.state.currentStep - 1})
+        }
+    }
+
+    next() {
+        if (this.state.currentStep < 5) {
+            this.setState({currentStep: this.state.currentStep + 1})
+        }
     }
 
     selectBread(bread) {
@@ -155,16 +173,21 @@ class App extends Component {
     renderSwitch() {
         switch (this.state.currentStep) {
             case 1:
-                return (<Step1 breads={ingredients.breads} handler={this.selectBread}/>);
+                return (<Step1 currentKebab={this.state.currentKebab} breads={ingredients.breads} handler={this.selectBread} next={this.next}/>);
             case 2:
-                return (<Step2 meets={ingredients.meets} handler={this.selectMeet}/>);
+                return (<Step2 currentKebab={this.state.currentKebab} meets={ingredients.meets} handler={this.selectMeet} previous={this.previous}
+                               next={this.next}/>);
             case 3:
-                return (<Step3 vegetables={ingredients.vegetables} handler={this.selectVegetables}/>);
+                return (
+                    <Step3 currentKebab={this.state.currentKebab} vegetables={ingredients.vegetables} handler={this.selectVegetables} previous={this.previous}
+                           next={this.next}/>);
             case 4:
-                return (<Step4 sauces={ingredients.sauces} handler={this.selectSauces}/>);
+                return (<Step4 currentKebab={this.state.currentKebab} sauces={ingredients.sauces} handler={this.selectSauces} previous={this.previous}
+                               next={this.next}/>);
             case 5:
                 return (
-                    <Step5 ingredients={ingredients} currentKebab={this.state.currentKebab} handler={this.addToCard}/>);
+                    <Step5 currentKebab={this.state.currentKebab} ingredients={ingredients} handler={this.addToCard}
+                           previous={this.previous}/>);
             default:
                 break;
         }
@@ -172,18 +195,24 @@ class App extends Component {
 
     render() {
         return (
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-md-9">
-                            {
-                                this.renderSwitch()
-                            }
-                        </div>
-                        <div className="col-md-3">
-                            <Checkout ingredients={ingredients} basket={this.state.basket}/>
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col-md-9">
+
+                        <div className="container">
+                            <img alt="logo" src="assets/img.png" className="img-thumbnai"/>
+                            <div className="row mt-2">
+                                {
+                                    this.renderSwitch()
+                                }
+                            </div>
                         </div>
                     </div>
+                    <div className="col-md-3">
+                        <Checkout ingredients={ingredients} basket={this.state.basket}/>
+                    </div>
                 </div>
+            </div>
         );
     }
 }

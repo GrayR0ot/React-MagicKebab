@@ -2,10 +2,6 @@ import {Component, Fragment} from "react";
 import './checkout.css';
 
 class Checkout extends Component {
-    constructor(props) {
-        super(props);
-    }
-
 
     render() {
         return (
