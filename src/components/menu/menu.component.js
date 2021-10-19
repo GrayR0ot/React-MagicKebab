@@ -1,36 +1,24 @@
 import {Component, Fragment} from "react";
-import './checkout.css';
+import './menu.css';
 
-class Checkout extends Component {
-
-    formattedPrice(price) {
-        return `${parseInt(price / 100)}€${price % 100 || ""}`
-    }
-
-    finalPrice() {
-        let kebabs = 0;
-        this.props.basket.forEach(x => {
-            kebabs+=x.quantity;
-        });
-        return this.formattedPrice(this.props.kebabPrice*kebabs);
-    }
+class Menu extends Component {
 
     render() {
         return (
             <div className="container background">
                 <div className="col-sm mt-2">
                     <div className="row justify-content-center align-self-center">
-                        <h4 className="text-center mb-4">Total: { this.finalPrice() }</h4>
-                        <button className="btn btn-warning">Passer la commande</button>
-                        <h3>Votre commande</h3>
+                        <h3 className="text-center mb-4">Menu</h3>
+                        <h4>Meilleurs produits</h4>
                         {
-                            this.props.basket.map((item, index) => {
+                            this.props.menu.map((item, index) => {
                                 return (
                                     <Fragment key={index}>
-                                        <div className="border border-warning border-2 rounded mt-3">
-                                            <p>🥙 {this.props.ingredients.breads[item.bread].name}</p>
-                                            <p>🍖 {this.props.ingredients.meats[item.meat].name}</p>
-                                            <p>🍅
+                                        <div className="border border-warning border-2 rounded mt-3 py-3">
+                                            <b>🏆 {item.name}</b>
+                                            <p className="mt-4 mx-4">🥙 {this.props.ingredients.breads[item.bread].name}</p>
+                                            <p className="mx-4">🍖 {this.props.ingredients.meats[item.meat].name}</p>
+                                            <p className="mx-4">🍅
                                                 {
                                                     item.vegetables.map((vegetable, index) => {
                                                         return (
@@ -40,7 +28,7 @@ class Checkout extends Component {
                                                     })
                                                 }
                                             </p>
-                                            <p>🍛
+                                            <p className="mx-4">🍛
                                                 {
                                                     item.sauces.map((sauce, index) => {
                                                         return (
@@ -50,15 +38,9 @@ class Checkout extends Component {
                                                     })
                                                 }
                                             </p>
-                                            <div className="row justify-content-center align-self-center margin-auto">
+                                            <div className="row">
                                                 <div className="col-sm-2">
-                                                    <button onClick={() => {this.props.decrement(item)}} className="btn btn-warning rounded"><b>-</b></button>
-                                                </div>
-                                                <div className="col-md-2">
-                                                    <p>🔥 x{item.quantity}</p>
-                                                </div>
-                                                <div className="col-sm-2">
-                                                    <button  onClick={() => {this.props.increment(item)}}className="btn btn-warning rounded"><b>+</b></button>
+                                                    <button onClick={() => {this.props.handler(item)}} className="btn btn-warning rounded"><b>Ajouter</b></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -74,4 +56,4 @@ class Checkout extends Component {
 
 }
 
-export default Checkout;
+export default Menu;

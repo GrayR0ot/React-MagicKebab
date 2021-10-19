@@ -18,9 +18,9 @@ class Step5 extends Component {
                     </div>
                     <div className="col-sm-5">
                         <button className="container border border-3 border-gray rounded">
-                            <img alt={this.props.ingredients.meets[this.props.currentKebab.meet].name}
-                                 src={this.props.ingredients.meets[this.props.currentKebab.meet].picture}/>
-                            <p>{this.props.ingredients.meets[this.props.currentKebab.meet].name}</p>
+                            <img alt={this.props.ingredients.meats[this.props.currentKebab.meat].name}
+                                 src={this.props.ingredients.meats[this.props.currentKebab.meat].picture}/>
+                            <p>{this.props.ingredients.meats[this.props.currentKebab.meat].name}</p>
                         </button>
                     </div>
                 </div>

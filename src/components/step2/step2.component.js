@@ -9,13 +9,13 @@ class Step2 extends Component {
                 <h1 className="text-center mb-4">Plutôt viande ou tofu ?</h1>
                 <div className="row justify-content-center align-self-center">
                     {
-                        this.props.meets.map((meet, index) => {
+                        this.props.meats.map((meat, index) => {
                             return (
                                 <div key={index} className="col-sm-5">
                                     <button onClick={() => this.props.handler(index)}
                                             className="container border border-3 border-gray selectable rounded">
-                                        <img alt={meet.name} src={meet.picture}/>
-                                        <p>{meet.name}</p>
+                                        <img alt={meat.name} src={meat.picture}/>
+                                        <p>{meat.name}</p>
                                     </button>
                                 </div>
                             )
@@ -30,7 +30,7 @@ class Step2 extends Component {
                             </button>
                         </div>
                         <div className="col-sm-2">
-                            <button className="btn btn-info" disabled={this.props.currentKebab.meet == null}
+                            <button className="btn btn-info" disabled={this.props.currentKebab.meat == null}
                                     onClick={() => this.props.next()}>Suivant
                             </button>
                         </div>

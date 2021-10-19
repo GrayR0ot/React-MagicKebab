@@ -5,6 +5,49 @@ import Step3 from "./components/step3/step3.component";
 import Step4 from "./components/step4/step4.component";
 import Step5 from "./components/step5/step5.component";
 import Checkout from "./components/checkout/checkout.component";
+import Menu from "./components/menu/menu.component";
+
+const menu = [
+    {
+        name: 'Le classique',
+        bread: 0,
+        meat: 0,
+        vegetables: [
+            0,
+            1,
+            2
+        ],
+        sauces: [
+            1
+        ]
+    },
+    {
+        name: 'Le vege',
+        bread: 0,
+        meat: 1,
+        vegetables: [
+            0,
+            1,
+            2
+        ],
+        sauces: [
+            1
+        ]
+    },
+    {
+        name: 'Le bbq',
+        bread: 0,
+        meat: 0,
+        vegetables: [
+            0,
+            1,
+            2
+        ],
+        sauces: [
+            3
+        ]
+    },
+]
 
 const ingredients = {
     breads: [
@@ -21,14 +64,14 @@ const ingredients = {
             picture: 'assets/bread/bread3.png'
         }
     ],
-    meets: [
+    meats: [
         {
             name: 'Viande',
-            picture: 'assets/meet/kebab.png'
+            picture: 'assets/meat/kebab.png'
         },
         {
             name: 'Tofu',
-            picture: 'assets/meet/tofu.png'
+            picture: 'assets/meat/tofu.png'
         }
     ],
     vegetables: [
@@ -82,7 +125,7 @@ class App extends Component {
             currentStep: 1,
             currentKebab: {
                 bread: null,
-                meet: null,
+                meat: null,
                 vegetables: [],
                 sauces: [],
                 quantity: 1,
@@ -93,10 +136,11 @@ class App extends Component {
         this.previous = this.previous.bind(this);
         this.next = this.next.bind(this);
         this.selectBread = this.selectBread.bind(this);
-        this.selectMeet = this.selectMeet.bind(this);
+        this.selectMeat = this.selectMeat.bind(this);
         this.selectVegetables = this.selectVegetables.bind(this);
         this.selectSauces = this.selectSauces.bind(this);
         this.addToCard = this.addToCard.bind(this);
+        this.orderSpecific = this.orderSpecific.bind(this);
         this.decrement = this.decrement.bind(this);
         this.increment = this.increment.bind(this);
     }
@@ -123,11 +167,11 @@ class App extends Component {
         }));
     }
 
-    selectMeet(meet) {
+    selectMeat(meat) {
         this.setState(prevState => ({
             currentKebab: {
                 ...prevState.currentKebab,
-                meet: meet
+                meat: meat
             },
             currentStep: 3
         }));
@@ -178,7 +222,7 @@ class App extends Component {
             basket: [...this.state.basket, this.state.currentKebab],
             currentKebab: {
                 bread: null,
-                meet: null,
+                meat: null,
                 vegetables: [],
                 sauces: [],
                 quantity: 1,
@@ -188,11 +232,27 @@ class App extends Component {
         });
     }
 
+    orderSpecific(item) {
+        let specific = {
+            bread: item.bread,
+            meat: item.meat,
+            vegetables: item.vegetables,
+            sauces: item.sauces,
+            quantity: 1,
+            id: Date.now()
+        };
+        this.setState({
+            basket: [...this.state.basket, specific]
+        });
+    }
+
     decrement(item) {
         if (item.quantity === 1) {
-            this.setState({basket: this.state.basket.filter((kebab) => {
+            this.setState({
+                basket: this.state.basket.filter((kebab) => {
                     return JSON.stringify(kebab) !== JSON.stringify(item)
-                })});
+                })
+            });
         } else {
             const quantity = this.state.basket.filter(kebab => JSON.stringify(kebab) === JSON.stringify(item))[0].quantity;
             this.setState(prevState => ({
@@ -220,7 +280,7 @@ class App extends Component {
                            next={this.next}/>);
             case 2:
                 return (
-                    <Step2 currentKebab={this.state.currentKebab} meets={ingredients.meets} handler={this.selectMeet}
+                    <Step2 currentKebab={this.state.currentKebab} meats={ingredients.meats} handler={this.selectMeat}
                            previous={this.previous}
                            next={this.next}/>);
             case 3:
@@ -245,7 +305,11 @@ class App extends Component {
         return (
             <div className="container-fluid">
                 <div className="row">
-                    <div className="col-md-9">
+
+                    <div className="col-md-2">
+                        <Menu ingredients={ingredients} menu={menu} handler={this.orderSpecific}/>
+                    </div>
+                    <div className="col-md-8">
 
                         <div className="container">
                             <img alt="logo" src="assets/img.png" className="img-thumbnai"/>
@@ -256,7 +320,7 @@ class App extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className="col-md-3">
+                    <div className="col-md-2">
                         <Checkout ingredients={ingredients} basket={this.state.basket} decrement={this.decrement}
                                   increment={this.increment} kebabPrice={kebabPrice}/>
                     </div>
