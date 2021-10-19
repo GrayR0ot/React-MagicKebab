@@ -208,7 +208,7 @@ class App extends Component {
                 },
             }));
         } else {
-            if (this.state.currentKebab.sauces.length < 1) {
+            if (this.state.currentKebab.sauces.length < 2) {
                 this.setState(prevState => ({
                     currentKebab: {
                         ...prevState.currentKebab,
