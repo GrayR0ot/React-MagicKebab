@@ -73,6 +73,8 @@ const ingredients = {
     ],
 }
 
+const kebabPrice = 550;
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -83,6 +85,8 @@ class App extends Component {
                 meet: null,
                 vegetables: [],
                 sauces: [],
+                quantity: 1,
+                id: Date.now()
             },
             basket: []
         }
@@ -93,6 +97,8 @@ class App extends Component {
         this.selectVegetables = this.selectVegetables.bind(this);
         this.selectSauces = this.selectSauces.bind(this);
         this.addToCard = this.addToCard.bind(this);
+        this.decrement = this.decrement.bind(this);
+        this.increment = this.increment.bind(this);
     }
 
     previous() {
@@ -128,7 +134,7 @@ class App extends Component {
     }
 
     selectVegetables(vegetable) {
-        if(this.state.currentKebab.vegetables.includes(vegetable)) {
+        if (this.state.currentKebab.vegetables.includes(vegetable)) {
             this.setState(prevState => ({
                 currentKebab: {
                     ...prevState.currentKebab,
@@ -136,7 +142,7 @@ class App extends Component {
                 },
             }));
         } else {
-            if(this.state.currentKebab.vegetables.length <= 2) {
+            if (this.state.currentKebab.vegetables.length <= 2) {
                 this.setState(prevState => ({
                     currentKebab: {
                         ...prevState.currentKebab,
@@ -148,7 +154,7 @@ class App extends Component {
     }
 
     selectSauces(sauce) {
-        if(this.state.currentKebab.sauces.includes(sauce)) {
+        if (this.state.currentKebab.sauces.includes(sauce)) {
             this.setState(prevState => ({
                 currentKebab: {
                     ...prevState.currentKebab,
@@ -156,7 +162,7 @@ class App extends Component {
                 },
             }));
         } else {
-            if(this.state.currentKebab.sauces.length < 2) {
+            if (this.state.currentKebab.sauces.length < 1) {
                 this.setState(prevState => ({
                     currentKebab: {
                         ...prevState.currentKebab,
@@ -175,24 +181,56 @@ class App extends Component {
                 meet: null,
                 vegetables: [],
                 sauces: [],
+                quantity: 1,
+                id: Date.now()
             },
             currentStep: 1
         });
     }
 
+    decrement(item) {
+        if (item.quantity === 1) {
+            this.setState({basket: this.state.basket.filter((kebab) => {
+                    return JSON.stringify(kebab) !== JSON.stringify(item)
+                })});
+        } else {
+            const quantity = this.state.basket.filter(kebab => JSON.stringify(kebab) === JSON.stringify(item))[0].quantity;
+            this.setState(prevState => ({
+                basket: prevState.basket.map(
+                    obj => (JSON.stringify(obj) === JSON.stringify(item) ? Object.assign(obj, {quantity: quantity - 1}) : obj)
+                )
+            }));
+        }
+    }
+
+    increment(item) {
+        const quantity = this.state.basket.filter(kebab => JSON.stringify(kebab) === JSON.stringify(item))[0].quantity;
+        this.setState(prevState => ({
+            basket: prevState.basket.map(
+                obj => (JSON.stringify(obj) === JSON.stringify(item) ? Object.assign(obj, {quantity: quantity + 1}) : obj)
+            )
+        }));
+    }
+
     renderSwitch() {
         switch (this.state.currentStep) {
             case 1:
-                return (<Step1 currentKebab={this.state.currentKebab} breads={ingredients.breads} handler={this.selectBread} next={this.next}/>);
+                return (
+                    <Step1 currentKebab={this.state.currentKebab} breads={ingredients.breads} handler={this.selectBread}
+                           next={this.next}/>);
             case 2:
-                return (<Step2 currentKebab={this.state.currentKebab} meets={ingredients.meets} handler={this.selectMeet} previous={this.previous}
-                               next={this.next}/>);
+                return (
+                    <Step2 currentKebab={this.state.currentKebab} meets={ingredients.meets} handler={this.selectMeet}
+                           previous={this.previous}
+                           next={this.next}/>);
             case 3:
                 return (
-                    <Step3 currentKebab={this.state.currentKebab} vegetables={ingredients.vegetables} handler={this.selectVegetables} previous={this.previous}
+                    <Step3 currentKebab={this.state.currentKebab} vegetables={ingredients.vegetables}
+                           handler={this.selectVegetables} previous={this.previous}
                            next={this.next}/>);
             case 4:
-                return (<Step4 currentKebab={this.state.currentKebab} sauces={ingredients.sauces} handler={this.selectSauces} previous={this.previous}
+                return (<Step4 currentKebab={this.state.currentKebab} sauces={ingredients.sauces}
+                               handler={this.selectSauces} previous={this.previous}
                                next={this.next}/>);
             case 5:
                 return (
@@ -219,7 +257,8 @@ class App extends Component {
                         </div>
                     </div>
                     <div className="col-md-3">
-                        <Checkout ingredients={ingredients} basket={this.state.basket}/>
+                        <Checkout ingredients={ingredients} basket={this.state.basket} decrement={this.decrement}
+                                  increment={this.increment} kebabPrice={kebabPrice}/>
                     </div>
                 </div>
             </div>

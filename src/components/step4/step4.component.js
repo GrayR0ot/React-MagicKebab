@@ -30,7 +30,7 @@ class Step4 extends Component {
                             </button>
                         </div>
                         <div className="col-sm-2">
-                            <button className="btn btn-info" disabled={this.props.currentKebab.sauces.length < 2}
+                            <button className="btn btn-info" disabled={this.props.currentKebab.sauces.length < 1}
                                     onClick={() => this.props.next()}>Suivant
                             </button>
                         </div>
