@@ -1,7 +1,7 @@
 import {Component} from "react";
-import './step3.css';
+import './step4.css';
 
-class Step3 extends Component {
+class Step4 extends Component {
     constructor(props) {
         super(props);
 
@@ -13,15 +13,15 @@ class Step3 extends Component {
             <div className="container">
                 <img src="assets/img.png" className="img-thumbnai"/>
                 <div className="row mt-2">
-                    <h1 className="text-center mb-4">Salade, tomates, oignons ?</h1>
+                    <h1 className="text-center mb-4">Quelques sauces ?</h1>
                     <div className="row justify-content-center align-self-center">
                         {
-                            this.props.vegetables.map((vegetable, index) => {
+                            this.props.sauces.map((sauce, index) => {
                                 return (
                                     <div key={index} className="col-sm-4">
                                         <button onClick={() => this.props.handler(index)} className="container border border-3 border-gray selectable rounded">
-                                            <img src={vegetable.picture}/>
-                                            <p>{vegetable.name}</p>
+                                            <img src={sauce.picture}/>
+                                            <p>{sauce.name}</p>
                                         </button>
                                     </div>
                                 )
@@ -36,4 +36,4 @@ class Step3 extends Component {
 
 }
 
-export default Step3;
+export default Step4;

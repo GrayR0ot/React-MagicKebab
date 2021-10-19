@@ -10,27 +10,28 @@ class Step1 extends Component {
 
     render() {
         return (
-            <div className="container">
+            <div className="container background">
                 <img src="assets/img.png" className="img-thumbnai"/>
-                <b className="choiseTitle">Pain ou galette ?</b>
-                <div className="margin"/>
-                <div className="row">
-                    <div className="col-sm">
-                        <button className="container border border-3 border-gray selectable rounded" onClick={() => this.props.handler(1)}>
-                                <img src="assets/breed1.png"/>
-                        </button>
-                    </div>
-                    <div className="col-sm">
-                        <button className="container border border-3 border-gray selectable rounded" onClick={() => this.props.handler(2)}>
-                            <img src="assets/breed2.png"/>
-                        </button>
+                <div className="col-sm mt-2">
+                    <h1 className="text-center mb-4">Pain ou galette ?</h1>
+                    <div className="row justify-content-center align-self-center">
+                        {
+                            this.props.breads.map((bread, index) => {
+                                return (
+                                    <div key={index} className="col-sm-5">
+                                        <button onClick={() => this.props.handler(index)} className="container border border-3 border-gray selectable rounded">
+                                            <img src={bread.picture}/>
+                                            <p>{bread.name}</p>
+                                        </button>
+                                    </div>
+                                )
+                            })
+                        }
                     </div>
                 </div>
             </div>
         );
     }
-
-
 }
 
 export default Step1;
